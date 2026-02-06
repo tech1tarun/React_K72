@@ -1,13 +1,46 @@
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import React from "react";
+import { useRef } from "react";
 
 const FullScreenNav = () => {
+  const fullNavLinksRef = useRef(null);
+
+  useGSAP(function () {
+    const tl = gsap.timeline();
+
+    tl.from(".stairing", {
+      height: 0,
+      stagger: {
+        amount: -0.25,
+      },
+      duration: 0.8,
+      ease: "power3.out",
+    });
+    tl.from(fullNavLinksRef.current, {
+      opacity: 0,
+      duration: 0.4,
+    });
+    tl.from(".link", {
+      rotateX: 90,
+    });
+  });
+
   return (
     <div
       id="fullscreennav"
       className="h-screen w-full overflow-hidden absolute bg-black"
     >
-      <div></div>
-      <div>
+      <div className="h-screen w-full fixed">
+        <div className="h-full w-full flex">
+          <div className="stairing h-full w-1/5 bg-red-900"></div>
+          <div className="stairing h-full w-1/5 bg-red-900"></div>
+          <div className="stairing h-full w-1/5 bg-red-900"></div>
+          <div className="stairing h-full w-1/5 bg-red-900"></div>
+          <div className="stairing h-full w-1/5 bg-red-900"></div>
+        </div>
+      </div>
+      <div ref={fullNavLinksRef} className="relative">
         <div className="flex w-full justify-between p-3 items-start">
           <div className="p-3">
             <div className="w-36">
@@ -25,8 +58,8 @@ const FullScreenNav = () => {
             <div className="h-44 w-0.5 right-0 rotate-45 origin-top absolute bg-[#D3FD50]"></div>
           </div>
         </div>
-        <div className=" py-26">
-          <div className="link relative border-t-2">
+        <div className="py-26">
+          <div className="link origin-top relative border-t-2 ">
             <h1 className="text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
               Work
             </h1>
@@ -65,7 +98,7 @@ const FullScreenNav = () => {
               </div>
             </div>
           </div>
-          <div className="link relative border-t-2">
+          <div className="link origin-top relative border-t-2">
             <h1 className="text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
               Work
             </h1>
@@ -104,7 +137,7 @@ const FullScreenNav = () => {
               </div>
             </div>
           </div>
-          <div className="link relative border-t-2">
+          <div className="link origin-top relative border-t-2">
             <h1 className="text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
               Work
             </h1>
@@ -143,7 +176,7 @@ const FullScreenNav = () => {
               </div>
             </div>
           </div>
-          <div className="link relative border-y-2">
+          <div className="link origin-top relative border-y-2">
             <h1 className="text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
               Work
             </h1>
