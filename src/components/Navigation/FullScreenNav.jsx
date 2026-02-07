@@ -1,43 +1,64 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import React from "react";
-import { useRef } from "react";
+import { useRef, useContext, useEffect } from "react";
+import { NavbarContext } from "../../context/NavContext";
 
 const FullScreenNav = () => {
   const fullNavLinksRef = useRef(null);
+  const fullScreenRef = useRef(null);
+  const [navOpen, setNavOpen] = useContext(NavbarContext);
+  console.log(navOpen);
 
-  useGSAP(function () {
-    const tl = gsap.timeline();
+  const tlRef = useRef(null);
+  useGSAP(() => {
+    tlRef.current = gsap.timeline({ paused: true });
 
-    tl.from(".stairing", {
-      height: 0,
-      stagger: {
-        amount: -0.25,
-      },
-      duration: 0.8,
-      ease: "power3.out",
-    });
-    tl.from(fullNavLinksRef.current, {
-      opacity: 0,
-      duration: 0.4,
-    });
-    tl.from(".link", {
-      rotateX: 90,
-    });
-  });
+    tlRef.current
+      .from(".stairing", {
+        height: 0,
+        stagger: { amount: -0.25 },
+        duration: 0.8,
+        ease: "power3.out",
+      })
+      .from(fullNavLinksRef.current, {
+        opacity: 0,
+        duration: 0.4,
+      })
+      .from(".link", {
+        rotateX: 90,
+        opacity: 0,
+        stagger: 0.1,
+      });
+  }, []);
+
+  
+
+  useEffect(() => {
+  if (!tlRef.current) return;
+
+  if (navOpen) {
+    tlRef.current.play();     // OPEN
+  } else {
+    tlRef.current.reverse();  // CLOSE (same animation, reversed)
+  }
+}, [navOpen]);
 
   return (
     <div
+      ref={fullScreenRef}
       id="fullscreennav"
-      className="h-screen w-full overflow-hidden absolute bg-black"
+      // className=" h-screen w-full overflow-hidden absolute bg-black z-50"
+      className={`h-screen w-full absolute bg-black z-50 transition-opacity ${
+        navOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
     >
       <div className="h-screen w-full fixed">
         <div className="h-full w-full flex">
-          <div className="stairing h-full w-1/5 bg-red-900"></div>
-          <div className="stairing h-full w-1/5 bg-red-900"></div>
-          <div className="stairing h-full w-1/5 bg-red-900"></div>
-          <div className="stairing h-full w-1/5 bg-red-900"></div>
-          <div className="stairing h-full w-1/5 bg-red-900"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
         </div>
       </div>
       <div ref={fullNavLinksRef} className="relative">
@@ -53,7 +74,12 @@ const FullScreenNav = () => {
               </svg>
             </div>
           </div>
-          <div className="h-32 w-32 relative cursor-pointer">
+          <div
+            onClick={() => {
+              setNavOpen(false);
+            }}
+            className="h-32 w-32 relative cursor-pointer"
+          >
             <div className="h-44 w-0.5 -rotate-45 origin-top absolute bg-[#D3FD50]"></div>
             <div className="h-44 w-0.5 right-0 rotate-45 origin-top absolute bg-[#D3FD50]"></div>
           </div>
@@ -100,19 +126,19 @@ const FullScreenNav = () => {
           </div>
           <div className="link origin-top relative border-t-2">
             <h1 className="text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
-              Work
+              Agency
             </h1>
             <div className="moveLink absolute flex top-0 bg-[#D3FD50] text-black">
               <div className="moveX flex overflow-auto items-center">
                 <h2 className="whitespace-nowrap text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Know Us
                 </h2>
                 <img
                   className="h-28 object-cover rounded-full shrink-0 w-72"
                   src="/photo/work.jpg"
                 />
                 <h2 className="whitespace-nowrap text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Know Us
                 </h2>
                 <img
                   className="h-28 object-cover rounded-full shrink-0 w-72"
@@ -121,14 +147,14 @@ const FullScreenNav = () => {
               </div>
               <div className="moveX flex overflow-auto items-center">
                 <h2 className="whitespace-nowrap text-center leading-[0.95] pt-2 font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Know Us
                 </h2>
                 <img
                   className="h-32 object-cover rounded-full shrink-0 w-72"
                   src="/photo/work.jpg"
                 />
                 <h2 className="whitespace-nowrap text-center leading-[0.95] pt-2 font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Know Us
                 </h2>
                 <img
                   className="h-32 object-cover rounded-full shrink-0 w-72"
@@ -139,7 +165,7 @@ const FullScreenNav = () => {
           </div>
           <div className="link origin-top relative border-t-2">
             <h1 className="text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
-              Work
+              Contact
             </h1>
             <div className="moveLink absolute flex top-0 bg-[#D3FD50] text-black">
               <div className="moveX flex overflow-auto items-center">
@@ -151,7 +177,7 @@ const FullScreenNav = () => {
                   src="/photo/work.jpg"
                 />
                 <h2 className="whitespace-nowrap text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Send Us a Fax
                 </h2>
                 <img
                   className="h-28 object-cover rounded-full shrink-0 w-72"
@@ -160,14 +186,14 @@ const FullScreenNav = () => {
               </div>
               <div className="moveX flex overflow-auto items-center">
                 <h2 className="whitespace-nowrap text-center leading-[0.95] pt-2 font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Send Us a Fax
                 </h2>
                 <img
                   className="h-32 object-cover rounded-full shrink-0 w-72"
                   src="/photo/work.jpg"
                 />
                 <h2 className="whitespace-nowrap text-center leading-[0.95] pt-2 font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Send Us a Fax
                 </h2>
                 <img
                   className="h-32 object-cover rounded-full shrink-0 w-72"
@@ -178,19 +204,19 @@ const FullScreenNav = () => {
           </div>
           <div className="link origin-top relative border-y-2">
             <h1 className="text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
-              Work
+              Blog
             </h1>
             <div className="moveLink absolute flex top-0 bg-[#D3FD50] text-black">
               <div className="moveX flex overflow-auto items-center">
                 <h2 className="whitespace-nowrap text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Read Article
                 </h2>
                 <img
                   className="h-28 object-cover rounded-full shrink-0 w-72"
                   src="/photo/work.jpg"
                 />
                 <h2 className="whitespace-nowrap text-center leading-[0.95] font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Read Article
                 </h2>
                 <img
                   className="h-28 object-cover rounded-full shrink-0 w-72"
@@ -199,14 +225,14 @@ const FullScreenNav = () => {
               </div>
               <div className="moveX flex overflow-auto items-center">
                 <h2 className="whitespace-nowrap text-center leading-[0.95] pt-2 font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Read Article
                 </h2>
                 <img
                   className="h-32 object-cover rounded-full shrink-0 w-72"
                   src="/photo/work.jpg"
                 />
                 <h2 className="whitespace-nowrap text-center leading-[0.95] pt-2 font-[font2] text-[8vw] uppercase">
-                  See Everthing
+                  Read Article
                 </h2>
                 <img
                   className="h-32 object-cover rounded-full shrink-0 w-72"
