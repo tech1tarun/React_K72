@@ -31,24 +31,22 @@ const FullScreenNav = () => {
       });
   }, []);
 
-  
-
   useEffect(() => {
-  if (!tlRef.current) return;
+    if (!tlRef.current) return;
 
-  if (navOpen) {
-    tlRef.current.play();     // OPEN
-  } else {
-    tlRef.current.reverse();  // CLOSE (same animation, reversed)
-  }
-}, [navOpen]);
+    if (navOpen) {
+      tlRef.current.play(); // OPEN
+    } else {
+      tlRef.current.reverse(); // CLOSE (same animation, reversed)
+    }
+  }, [navOpen]);
 
   return (
     <div
       ref={fullScreenRef}
       id="fullscreennav"
       // className=" h-screen w-full overflow-hidden absolute bg-black z-50"
-      className={`h-screen w-full absolute bg-black z-50 transition-opacity ${
+      className={`h-screen w-full fixed bg-black z-50 transition-opacity ${
         navOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >

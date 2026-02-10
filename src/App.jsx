@@ -2,13 +2,13 @@ import React from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Agence from "./pages/Agence";
-import Projects from "./pages/Project";
+import Projects from "./pages/Projects";
 import NavBar from "./components/Navigation/NavBar";
 import FullScreenNav from "./components/Navigation/FullScreenNav";
 
 const App = () => {
   return (
-    <div className="text-white">
+    <div className="text-black">
       <NavBar />
       <FullScreenNav />
       <Routes>
